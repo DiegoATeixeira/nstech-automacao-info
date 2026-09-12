@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NSTECH Automação</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#F5F7F8;
+    --surface:#FFFFFF;
+    --ink:#171B1F;
+    --ink-muted:#4B5560;
+    --ink-faint:#7C8790;
+    --accent:#1F6F63;
+    --accent-strong:#123F39;
+    --accent-soft:#E4F1EE;
+    --border:#DEE3E6;
+    --code-bg:#EEF2F1;
+    --shadow: 0 1px 2px rgba(23,27,31,0.04), 0 8px 24px -12px rgba(23,27,31,0.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#10151A;
+      --surface:#171E24;
+      --ink:#EAF0F1;
+      --ink-muted:#9FB0B6;
+      --ink-faint:#71838A;
+      --accent:#57C6B4;
+      --accent-strong:#9CE3D6;
+      --accent-soft:#1B2E2C;
+      --border:#26313A;
+      --code-bg:#1C242B;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 28px -14px rgba(0,0,0,0.55);
+    }
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  img{max-width:100%;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Fraunces", ui-serif, Georgia, serif;
+    font-weight:600;
+    text-wrap:balance;
+    color:var(--ink);
+    margin:0;
+  }
+  code, .mono{
+    font-family:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  a{ color:var(--accent-strong); }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .page{
+    max-width:700px;
+    margin:0 auto;
+    padding:56px 24px 96px;
+    display:flex;
+    flex-direction:column;
+    gap:48px;
+  }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--border);
+  }
+  .wordmark{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    font-family:"Fraunces", serif;
+    font-size:1.05rem;
+    font-weight:600;
+  }
+  .wordmark .dim{
+    font-family:"IBM Plex Mono", monospace;
+    font-weight:400;
+    font-size:0.78rem;
+    color:var(--ink-faint);
+    letter-spacing:0.02em;
+  }
+  nav{ display:flex; gap:20px; }
+  nav a{
+    font-size:0.9rem;
+    color:var(--ink-muted);
+    text-decoration:none;
+    padding:4px 2px;
+    border-bottom:1px solid transparent;
+  }
+  nav a.current, nav a:hover{
+    color:var(--ink);
+    border-bottom-color:var(--accent);
+  }
+
+  .hero{ display:flex; flex-direction:column; gap:18px; }
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.75rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--accent-strong);
+  }
+  .hero h1{ font-size:clamp(1.9rem, 4vw, 2.5rem); line-height:1.15; }
+  .lede{
+    font-size:1.05rem;
+    color:var(--ink-muted);
+    max-width:56ch;
+  }
+
+  .badge-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.75rem;
+    color:var(--accent-strong);
+    background:var(--accent-soft);
+    border:1px solid var(--border);
+    border-radius:5px;
+    padding:5px 9px;
+  }
+  .badge .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--accent);
+    flex:none;
+  }
+
+  section{ display:flex; flex-direction:column; gap:16px; }
+  section h2{ font-size:1.25rem; }
+  section p{ color:var(--ink-muted); max-width:60ch; }
+
+  .manifest{
+    list-style:none;
+    margin:0; padding:0;
+    display:flex;
+    flex-direction:column;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--surface);
+    box-shadow:var(--shadow);
+  }
+  .manifest li{
+    display:grid;
+    grid-template-columns:28px 1fr;
+    gap:12px;
+    padding:16px 18px;
+    border-top:1px solid var(--border);
+  }
+  .manifest li:first-child{ border-top:none; }
+  .manifest .mark{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.95rem;
+    color:var(--accent);
+    line-height:1.5;
+  }
+  .manifest .mark.no{ color:var(--ink-faint); }
+  .manifest strong{ font-weight:600; }
+  .manifest span{ color:var(--ink-muted); font-size:0.95rem; }
+
+  .runlog{
+    background:var(--code-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:0.82rem;
+    line-height:1.85;
+    color:var(--ink-muted);
+    overflow-x:auto;
+  }
+  .runlog .l{ white-space:pre; }
+  .runlog .k{ color:var(--accent-strong); }
+  .runlog .c{ color:var(--ink-faint); }
+
+  footer{
+    border-top:1px solid var(--border);
+    padding-top:20px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:12px;
+    font-size:0.85rem;
+    color:var(--ink-faint);
+  }
+  footer a{ color:var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <div class="wordmark">NSTECH <span class="dim">/ automação</span></div>
+    <nav>
+      <a class="current" href="index.html" aria-current="page">Início</a>
+      <a href="privacy.html">Privacidade</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <span class="eyebrow">Ferramenta interna de QA</span>
+    <h1>Automação de testes NSTECH</h1>
+    <p class="lede">
+      Suíte interna de testes automatizados (Playwright) usada pelo time de QA da NSTECH para
+      validar o sistema MultiTMS antes de cada entrega. Não é um produto voltado ao público —
+      esta página existe para documentar, de forma transparente, o que a suíte acessa e por quê.
+    </p>
+    <div class="badge-row">
+      <span class="badge"><span class="dot"></span>uso interno</span>
+      <span class="badge"><span class="dot"></span>escopo: gmail.readonly</span>
+      <span class="badge"><span class="dot"></span>somente leitura</span>
+    </div>
+  </div>
+
+  <section>
+    <h2>O que a suíte faz</h2>
+    <p>
+      Alguns fluxos de teste (redefinição de senha, primeiro acesso) dependem de um código ou link
+      enviado por e-mail. A suíte lê esse e-mail para poder concluir o fluxo sozinha, sem depender
+      de alguém abrir a caixa de entrada manualmente durante a execução.
+    </p>
+    <ul class="manifest">
+      <li>
+        <span class="mark">✓</span>
+        <div><strong>Lê e-mails da própria caixa de automação</strong><br><span>Uma conta dedicada, criada só para isso: <code>automacao.nstech@gmail.com</code>.</span></div>
+      </li>
+      <li>
+        <span class="mark">✓</span>
+        <div><strong>Procura por remetente e assunto conhecidos</strong><br><span>Filtra mensagens do próprio MultiTMS dentro de uma janela de poucos minutos após disparar o teste.</span></div>
+      </li>
+      <li>
+        <span class="mark no">✗</span>
+        <div><strong>Não acessa contas de terceiros</strong><br><span>Nenhum dado de cliente, funcionário ou usuário final passa por essa suíte.</span></div>
+      </li>
+      <li>
+        <span class="mark no">✗</span>
+        <div><strong>Não envia, apaga nem encaminha e-mails</strong><br><span>O acesso é só de leitura — escopo <code>gmail.readonly</code>, nada além disso.</span></div>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Como isso aparece em uma execução</h2>
+    <p>Um exemplo real, resumido, de um dos passos de teste que depende do e-mail:</p>
+    <div class="runlog"><div class="l"><span class="c">$</span> playwright test usuario.cpf.spec.ts</div><div class="l"><span class="k">✓</span> Cadastrar usuário e disparar redefinição de senha <span class="c">(2.1s)</span></div><div class="l"><span class="k">✓</span> Aguardar e-mail com a senha temporária <span class="c">(4.8s)</span></div><div class="l"><span class="k">✓</span> Login com a senha recebida por e-mail <span class="c">(1.3s)</span></div></div>
+  </section>
+
+  <footer>
+    <span>NSTECH · time de Qualidade e Automação</span>
+    <a href="mailto:automacao.nstech@gmail.com">automacao.nstech@gmail.com</a>
+  </footer>
+</div>
+</body>
+</html>
